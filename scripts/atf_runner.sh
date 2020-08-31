@@ -152,7 +152,7 @@ create_html_report
 
 SDL_BRANCH=$(wget -qO - $UPSTREAM_BUILD_URL/api/json | grep -Po 'SDL_BRANCH","value":.*?[^\\]"' | cut -d':' -f2 | sed 's/\"//g')
 
-echo Desc: "SDL: ${SDL_BRANCH0:0:29} (${SDL_GIT_COMMIT:0:8})<br>SCR:${SCRIPT_BRANCH:0:29} (${SCRIPT_GIT_COMMIT:0:8})"
+echo Desc: "SDL: ${SDL_BRANCH:0:29} (${SDL_GIT_COMMIT:0:8})<br>SCR: ${SCRIPT_BRANCH:0:29} (${SCRIPT_GIT_COMMIT:0:8})"
 
 status=$([ "$(grep -cP "\tABORTED|\tFAILED" $_atf_report_file)" -eq 0 ] && echo 0 || echo 1)
 
