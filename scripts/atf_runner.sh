@@ -44,9 +44,14 @@ ln -s ../$_scripts_folder/user_modules
 cp -rf ../$_sdl_folder/bin/api/*_API.xml ./data/
 
 echo "=== Prepare Test Target"
-if grep -q "http" <<< "$TEST_TARGET"; then
-  wget -q $TEST_TARGET
-  TEST_TARGET=$(basename $TEST_TARGET)
+if [[ ${TEST_TARGET} = *" "* ]]; then
+  cat ${TEST_TARGET} > combined_test_set.txt
+  TEST_TARGET=combined_test_set.txt
+else
+  if [[ $TEST_TARGET = http* ]]; then
+    wget -q $TEST_TARGET
+    TEST_TARGET=$(basename $TEST_TARGET)
+  fi
 fi
 echo "TEST_TARGET:" $TEST_TARGET
 
