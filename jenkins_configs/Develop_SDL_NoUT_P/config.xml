@@ -1,0 +1,194 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Build sdl_core without unit tests on Proprietary flow</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>50</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>5</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.31">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>SDL_REPOSITORY</name>
+          <description></description>
+          <defaultValue>https://github.com/smartdevicelink/sdl_core</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>SDL_BRANCH</name>
+          <description></description>
+          <defaultValue>develop</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.2.2">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <name>origin</name>
+        <refspec>+refs/heads/${SDL_BRANCH}:refs/remotes/origin/${SDL_BRANCH}</refspec>
+        <url>${SDL_REPOSITORY}</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>${SDL_BRANCH}</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.CloneOption>
+        <shallow>true</shallow>
+        <noTags>true</noTags>
+        <reference>/home/jenkins/github/sdl_core</reference>
+        <depth>1</depth>
+        <honorRefspec>true</honorRefspec>
+      </hudson.plugins.git.extensions.impl.CloneOption>
+      <hudson.plugins.git.extensions.impl.SubmoduleOption>
+        <disableSubmodules>false</disableSubmodules>
+        <recursiveSubmodules>true</recursiveSubmodules>
+        <trackingSubmodules>false</trackingSubmodules>
+        <reference></reference>
+        <parentCredentials>false</parentCredentials>
+        <shallow>false</shallow>
+      </hudson.plugins.git.extensions.impl.SubmoduleOption>
+    </extensions>
+  </scm>
+  <assignedNode>build</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.cmake.CmakeBuilder plugin="cmakebuilder@2.6.3">
+      <installationName>InSearchPath</installationName>
+      <workingDir>build</workingDir>
+      <toolArgs>-DBUILD_TESTS=OFF -DENABLE_IAP2EMULATION=ON</toolArgs>
+      <sourceDir>.</sourceDir>
+      <buildType>Debug</buildType>
+      <cleanBuild>true</cleanBuild>
+    </hudson.plugins.cmake.CmakeBuilder>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+
+#set build description
+echo Desc: &quot;SDL:&quot;  ${GIT_BRANCH:7:29} &quot; &quot; ${GIT_COMMIT:0:8}
+
+wget https://raw.githubusercontent.com/LuxoftSDL/sdl_core_ci/release/6.1.0/scripts/build_noUT.sh
+#cp /home/jenkins/art/build_noUT.sh .
+chmod +x build_noUT.sh
+./build_noUT.sh</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>build/*.tar.gz</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+      <followSymlinks>true</followSymlinks>
+    </hudson.tasks.ArtifactArchiver>
+    <hudson.plugins.descriptionsetter.DescriptionSetterPublisher plugin="description-setter@1.10">
+      <regexp>^Desc: (.*)</regexp>
+      <regexpForFailed>^Desc: (.*)</regexpForFailed>
+      <setForMatrix>false</setForMatrix>
+    </hudson.plugins.descriptionsetter.DescriptionSetterPublisher>
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.36">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>UPSTREAM_BUILD_URL=$BUILD_URL
+SDL_GIT_BRANCH=$GIT_BRANCH
+SDL_GIT_COMMIT=$GIT_COMMIT
+ATF_BUILD_URL=https://opensdl-jenkins.prjdmz.luxoft.com/job/Develop_ATF_BUILD/lastSuccessfulBuild/
+SCRIPT_REPOSITORY=https://github.com/smartdevicelink/sdl_atf_test_scripts
+SCRIPT_BRANCH=develop</properties>
+              <textParamValueOnNewLine>false</textParamValueOnNewLine>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+          </configs>
+          <projects>Develop_TCP_ATF_Defects_5.x-4.x_P,Develop_TCP_ATF_Defects_7.x-6.x_P,Develop_TCP_ATF_Policies_P,Develop_TCP_ATF_RC_P,Develop_TCP_ATF_Smoke_P,Develop_TCP_ATF_VF1_P,Develop_TCP_ATF_VF2_P,Develop_TCP_ATF_VF3_P,Develop_TCP_ATF_VF4_P,Develop_TCP_ATF_VF5_P</projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>UPSTREAM_BUILD_URL=$BUILD_URL
+SDL_GIT_BRANCH=$GIT_BRANCH
+SDL_GIT_COMMIT=$GIT_COMMIT
+ATF_BUILD_URL=https://opensdl-jenkins.prjdmz.luxoft.com/job/Develop_ATF_BUILD/lastSuccessfulBuild/
+SCRIPT_REPOSITORY=https://github.com/smartdevicelink/sdl_atf_test_scripts
+SCRIPT_BRANCH=develop</properties>
+              <textParamValueOnNewLine>false</textParamValueOnNewLine>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+          </configs>
+          <projects>Develop_WSS_ATF_Defects_5.x-4.x_P,Develop_WSS_ATF_Defects_7.x-6.x_P,Develop_WSS_ATF_Policies_P,Develop_WSS_ATF_RC_P,Develop_WSS_ATF_Smoke_P,Develop_WSS_ATF_VF1_P,Develop_WSS_ATF_VF2_P,Develop_WSS_ATF_VF3_P,Develop_WSS_ATF_VF4_P,Develop_WSS_ATF_VF5_P</projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+              <properties>UPSTREAM_BUILD_URL=$BUILD_URL
+SDL_GIT_BRANCH=$GIT_BRANCH
+SDL_GIT_COMMIT=$GIT_COMMIT
+ATF_BUILD_URL=https://opensdl-jenkins.prjdmz.luxoft.com/job/Develop_ATF_BUILD/lastSuccessfulBuild/
+SCRIPT_REPOSITORY=https://github.com/smartdevicelink/sdl_atf_test_scripts
+SCRIPT_BRANCH=develop</properties>
+              <textParamValueOnNewLine>false</textParamValueOnNewLine>
+            </hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+          </configs>
+          <projects>Develop_WS_ATF_Defects_5.x-4.x_P,Develop_WS_ATF_Defects_7.x-6.x_P,Develop_WS_ATF_Policies_P,Develop_WS_ATF_RC_P,Develop_WS_ATF_Smoke_P,Develop_WS_ATF_VF1_P,Develop_WS_ATF_VF2_P,Develop_WS_ATF_VF3_P,Develop_WS_ATF_VF4_P,Develop_WS_ATF_VF5_P</projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <triggerFromChildProjects>false</triggerFromChildProjects>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.11.3"/>
+    <EnvInjectBuildWrapper plugin="envinject@2.3.0">
+      <info>
+        <propertiesContent>LC_CTYPE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+CTEST_OUTPUT_ON_FAILURE=TRUE 
+THIRD_PARTY_INSTALL_PREFIX=${WORKSPACE}/build/src/3rdparty/LINUX
+THIRD_PARTY_INSTALL_PREFIX_ARCH=${THIRD_PARTY_INSTALL_PREFIX}/x86
+LD_LIBRARY_PATH=$THIRD_PARTY_INSTALL_PREFIX_ARCH/lib
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$THIRD_PARTY_INSTALL_PREFIX/lib
+SDL_BUILD=BUILD_URL
+SDL_GIT_COMMIT=$GIT_COMMIT
+SDL_GIT_BRANCH=$GIT_BRANCH</propertiesContent>
+        <secureGroovyScript plugin="script-security@1.71">
+          <script></script>
+          <sandbox>false</sandbox>
+        </secureGroovyScript>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+    </EnvInjectBuildWrapper>
+  </buildWrappers>
+</project>
