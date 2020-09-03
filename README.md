@@ -37,10 +37,10 @@ There are three main directories:
 - `jenkins_configs` contains Jenkins xml config files for two main job types - build sdl_core and run smoke test atf test job.
 - `scripts` contains bash scripts wich are used in jobs
 
-#FAQ
+# FAQ
 
-#Is there a way for me to verify the jenkins server is pulling the scripts from github?
+# Is there a way for me to verify the jenkins server is pulling the scripts from github?
 Yes, we just should open `Console Output` log in Jenkins UI for needed job and find there string with downloading file from the `raw.githubusercontent.com` .
 
-#How an SDLC member would be able to integrate the new CI scripts into a jenkins server.
+# How an SDLC member would be able to integrate the new CI scripts into a jenkins server.
 Mainly, this is the way: create jobs from xml configs, create cloud resources from Dockerfiles, use bash scripts.
