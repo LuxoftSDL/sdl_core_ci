@@ -30,3 +30,17 @@ Here is a matrix of build jobs:
 Main view builds shows ATF build, UnitTests coverage, and a lot of sdl_core build jobs with different flags.
 
 There are several regression views that run all our ATF tests from develop on each Policy flow (Proprietary, External Proprietary, HTTP) and transport type (TCP, WebSocket, WebSocketSecured), on TCP using Remote ATF, and a view with ATF test jobs which use sdl_core built without WebSocket support. 
+
+There are three main directories:
+
+- `dockerfiles` contains Dockerfiles for building docker images for Jenkins cloud resources (build atf, build sdl_core, runt atf test jobs)
+- `jenkins_configs` contains Jenkins xml config files for two main job types - build sdl_core and run smoke test atf test job.
+- `scripts` contains bash scripts wich are used in jobs
+
+#FAQ
+
+#Is there a way for me to verify the jenkins server is pulling the scripts from github?
+Yes, we just should open `Console Output` log in Jenkins UI for needed job and find there string with downloading file from the `raw.githubusercontent.com` .
+
+#How an SDLC member would be able to integrate the new CI scripts into a jenkins server.
+Mainly, this is the way: create jobs from xml configs, create cloud resources from Dockerfiles, use bash scripts.
