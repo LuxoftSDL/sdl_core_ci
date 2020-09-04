@@ -56,7 +56,7 @@ fi
 echo "TEST_TARGET:" $TEST_TARGET
 
 echo "=== Start parallel workers"
-./start.sh $TEST_TARGET --jobs 24 --tmp /tmp/workspace --sdl-core ../$_sdl_folder/bin --no-sdl-log --no-sdl-core-dump --copy-atf-ts
+./start.sh $TEST_TARGET --jobs 24 --tmp /tmp/workspace --sdl-core ../$_sdl_folder/bin --copy-atf-ts
 
 echo "=== Prepare REPORT"
 if [ -d "$_report_folder" ]; then
