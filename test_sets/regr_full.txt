@@ -611,6 +611,9 @@
 ./test_scripts/Defects/7_0/3119_ChangeRegistration_with_unsupported_language.lua
 ./test_scripts/Defects/7_0/3372_StaySubscribedWaypoints_OnOtherAppDisconnect.lua
 ./test_scripts/Defects/7_0/3205_IGNORED_for_UnSubscribeVehicleData_in_case_VI_interface_is_not_available.lua
+./test_scripts/Defects/7_0/2888_ButtonNotificationsToFullApps.lua
+./test_scripts/Defects/7_0/2888_ButtonNotificationsToLimitedApps.lua
+./test_scripts/Defects/7_0/2888_ButtonNotificationToLimitedAppsWithAppId.lua
 ./test_scripts/iAP2TransportSwitch/001_happy_path.lua
 ./test_scripts/iAP2TransportSwitch/002_resume_failed_simple_case.lua
 ./test_scripts/iAP2TransportSwitch/003_resume_failed_remove_data_check.lua
