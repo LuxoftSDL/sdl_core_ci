@@ -11,11 +11,11 @@ echo "Info:"
 echo $remote_hash $remote_ip $local_ip
 
 echo "=== Prepare CORE"
-docker exec $remote_hash mkdir -p remote/core
-docker exec $remote_hash wget -q $UPSTREAM_BUILD_URL/artifact/build/OpenSDL.tar.gz
+docker exec $remote_hash bash -c "mkdir -p remote/core"
+docker exec $remote_hash bash -c "wget -q $UPSTREAM_BUILD_URL/artifact/build/OpenSDL.tar.gz"
 docker exec $remote_hash bash -c "tar xzf OpenSDL.tar.gz -C remote/core && rm -rf OpenSDL.tar.gz"
-docker exec $remote_hash wget -q $ATF_BUILD_URL/artifact/remote_atf.tar.gz
-docker exec $remote_hash tar xzf remote_atf.tar.gz --strip-components 1 -C remote
+docker exec $remote_hash bash -c "wget -q $ATF_BUILD_URL/artifact/remote_atf.tar.gz"
+docker exec $remote_hash bash -c "tar xzf remote_atf.tar.gz --strip-components 1 -C remote && rm -rf remote_atf.tar.gz"
 docker exec $remote_hash bash -c "cd /remote/RemoteTestingAdapterServer && export LD_LIBRARY_PATH='.:/remote/core/bin' && ./RemoteTestingAdapterServer &" &
 
 echo "=== Prepare SCRIPTS"
