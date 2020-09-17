@@ -4,19 +4,19 @@ _atf_folder=build_atf
 _report_folder=TestingReports
 
 echo "=== Prepare Remote environment"
-remote_hash=$(sudo docker run -d --rm remote_atf:u18 tail -f)
-remote_ip=$(dirty_ip=$(sudo docker inspect $remote_hash | grep '\"IPAddress\": "172.17.0' | tail -n1 | awk '{print $2}'); echo $dirty_ip | sed 's/"//g' | sed 's/,//g')
+remote_hash=$(docker run -d --rm remote_atf:u18 tail -f)
+remote_ip=$(dirty_ip=$(docker inspect $remote_hash | grep '\"IPAddress\": "172.17.0' | tail -n1 | awk '{print $2}'); echo $dirty_ip | sed 's/"//g' | sed 's/,//g')
 local_ip=$(ip add | grep 172.17 | awk '{print $2}' | sed 's|/16||g')
 echo "Info:"
 echo $remote_hash $remote_ip $local_ip
 
 echo "=== Prepare CORE"
-sudo docker exec $remote_hash mkdir -p remote/core
-sudo docker exec $remote_hash wget -q $UPSTREAM_BUILD_URL/artifact/build/OpenSDL.tar.gz
-sudo docker exec $remote_hash bash -c "tar xzf OpenSDL.tar.gz -C remote/core && rm -rf OpenSDL.tar.gz"
-sudo docker exec $remote_hash wget -q $ATF_BUILD_URL/artifact/remote_atf.tar.gz
-sudo docker exec $remote_hash tar xzf remote_atf.tar.gz --strip-components 1 -C remote
-sudo docker exec $remote_hash bash -c "cd /remote/RemoteTestingAdapterServer && export LD_LIBRARY_PATH='.:/remote/core/bin' && ./RemoteTestingAdapterServer &" &
+docker exec $remote_hash mkdir -p remote/core
+docker exec $remote_hash wget -q $UPSTREAM_BUILD_URL/artifact/build/OpenSDL.tar.gz
+docker exec $remote_hash bash -c "tar xzf OpenSDL.tar.gz -C remote/core && rm -rf OpenSDL.tar.gz"
+docker exec $remote_hash wget -q $ATF_BUILD_URL/artifact/remote_atf.tar.gz
+docker exec $remote_hash tar xzf remote_atf.tar.gz --strip-components 1 -C remote
+docker exec $remote_hash bash -c "cd /remote/RemoteTestingAdapterServer && export LD_LIBRARY_PATH='.:/remote/core/bin' && ./RemoteTestingAdapterServer &" &
 
 echo "=== Prepare SCRIPTS"
 git clone --single-branch --branch $SCRIPT_BRANCH $SCRIPT_REPOSITORY
@@ -36,8 +36,8 @@ ln -s ../$_scripts_folder/user_modules
 sed -i 's|/home/developer/sdl/b/dev/p/bin|/remote/core/bin|g' modules/configuration/remote_linux/base_config.lua
 sed -i "s|172.17.0.2|$remote_ip|g" modules/configuration/remote_linux/connection_config.lua
 sed -i "s|172.17.0.1|$local_ip|g" modules/configuration/remote_linux/connection_config.lua
-sudo docker cp $remote_hash:/remote/core/bin/api/MOBILE_API.xml ./data/
-sudo docker cp $remote_hash:/remote/core/bin/api/HMI_API.xml ./data/
+docker cp $remote_hash:/remote/core/bin/api/MOBILE_API.xml ./data/
+docker cp $remote_hash:/remote/core/bin/api/HMI_API.xml ./data/
 
 echo "=== Prepare Test Target"
 if [[ ${TEST_TARGET} = *" "* ]]; then
@@ -54,7 +54,7 @@ echo "TEST_TARGET:" $TEST_TARGET
 echo "=== Start ATF in remote mode"
 ./start.sh $TEST_TARGET --config=remote_linux
 
-sudo docker kill $remote_hash
+docker kill $remote_hash
 
 echo "=== Prepare REPORT"
 if [ -d "$_report_folder" ]; then
