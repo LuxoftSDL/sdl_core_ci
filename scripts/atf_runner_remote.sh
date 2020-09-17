@@ -7,7 +7,6 @@ echo "=== Prepare Remote environment"
 remote_hash=$(docker run -d --rm remote_atf:u18 tail -f)
 remote_ip=$(dirty_ip=$(docker inspect $remote_hash | grep '\"IPAddress\": "172.17.0' | tail -n1 | awk '{print $2}'); echo $dirty_ip | sed 's/"//g' | sed 's/,//g')
 local_ip=$(ip add | grep 172.17 | awk '{print $2}' | sed 's|/16||g')
-echo "Info:"
 echo $remote_hash $remote_ip $local_ip
 
 echo "=== Prepare CORE"
@@ -162,4 +161,3 @@ status=$([ "$(grep -cP "\tABORTED|\tFAILED" $_atf_report_file)" -eq 0 ] && echo 
 echo "Status:" $status
 
 exit $status
-
