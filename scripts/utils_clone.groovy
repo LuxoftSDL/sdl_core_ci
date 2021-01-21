@@ -5,79 +5,79 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
-import groovy.lang.Tuple
+import groovy.lang.Tuple2
 
 def user = "luxoft_ci_tech@luxoft.com"
 def token = "11630b3455e47056ae847be8445ccdf9b7"
 
 println "=== Parameters: ==="
 println GroovySystem.version
-// def params = [:]
-// build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-//   def (k, v) = ["${it.name}", "${it.value}"]
-//   if (v) {
-//     params[k] = v
-//     println "${k}: ${v}"
-//   }
-// }
+def params = [:]
+build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
+  def (k, v) = ["${it.name}", "${it.value}"]
+  if (v) {
+    params[k] = v
+    println "${k}: ${v}"
+  }
+}
 
-// def src
-// def trg
-// if (params["SOURCE_VIEW"]) { src = params["SOURCE_VIEW"] }
-// if (params["TARGET_VIEW"]) { trg = params["TARGET_VIEW"] }
-// boolean createIssueJobs = params["CREATE_FEATURE_JOBS"].toBoolean()
+def src
+def trg
+if (params["SOURCE_VIEW"]) { src = params["SOURCE_VIEW"] }
+if (params["TARGET_VIEW"]) { trg = params["TARGET_VIEW"] }
+boolean createIssueJobs = params["CREATE_FEATURE_JOBS"].toBoolean()
 
-// if (!src) {
-//   println "ERROR: Source view is not defined"
-//   return 1
-// }
+if (!src) {
+  println "ERROR: Source view is not defined"
+  return 1
+}
 
-// if (!trg) {
-//   println "ERROR: Target view is not defined"
-//   return 1
-// }
+if (!trg) {
+  println "ERROR: Target view is not defined"
+  return 1
+}
 
-// Jenkins jenkins = Jenkins.getInstance()
+Jenkins jenkins = Jenkins.getInstance()
 
-// def trgView = new ListView(trg)
+def trgView = new ListView(trg)
 
-// jenkins.addView(trgView)
-// def reqGet = ["bash", "-c", "curl -X GET http://localhost:8080/view/${src}/config.xml"]
-// def process = reqGet.execute()
-// process.waitFor()
-// def srcCfg = process.text
-// def trgCfg = srcCfg.replaceAll(src, trg).replaceAll("[\n\r]", "").trim()
-// def reqPost = ["bash", "-c", "echo '${trgCfg}' | curl -X POST -d @- http://localhost:8080/view/${trg}/config.xml -u ${user}:${token}"]
-// def process2 = reqPost.execute()
-// process2.waitFor()
+jenkins.addView(trgView)
+def reqGet = ["bash", "-c", "curl -X GET http://localhost:8080/view/${src}/config.xml"]
+def process = reqGet.execute()
+process.waitFor()
+def srcCfg = process.text
+def trgCfg = srcCfg.replaceAll(src, trg).replaceAll("[\n\r]", "").trim()
+def reqPost = ["bash", "-c", "echo '${trgCfg}' | curl -X POST -d @- http://localhost:8080/view/${trg}/config.xml -u ${user}:${token}"]
+def process2 = reqPost.execute()
+process2.waitFor()
 
-// println "=== New views created: ==="
-// println "${trgView.name}"
+println "=== New views created: ==="
+println "${trgView.name}"
 
-// def srcView = jenkins.getView(src)
+def srcView = jenkins.getView(src)
 
-// println "=== New jobs created: ==="
-// for(item in srcView.getItems()) {
-//   if (item.name.matches("(.*)_Issue_(.*)") && !createIssueJobs) { continue }
-//   def config = item.getConfigFile()
-//   File file = config.getFile()
-//   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
-//   if (item.name.matches("(.*)=RUN=")) {
-//     def xml = new XmlParser().parseText(fileContent)
-//     def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-//     jobParams.each {
-//       it ->
-//         def k = "${it.name.text()}"
-//         if (params[k]) { it.defaultValue[0].value = params[k] }
-//     }
-//     fileContent = XmlUtil.serialize(xml)
-//   }
-//   def jobName = item.getName().replace(src, trg)
-//   def stream = new ByteArrayInputStream(fileContent.getBytes())
-//   def job = jenkins.createProjectFromXML(jobName, stream)
-//   println "${job.name}"
-// }
+println "=== New jobs created: ==="
+for(item in srcView.getItems()) {
+  if (item.name.matches("(.*)_Issue_(.*)") && !createIssueJobs) { continue }
+  def config = item.getConfigFile()
+  File file = config.getFile()
+  String fileContent = file.getText('UTF-8').replaceAll(src, trg)
+  if (item.name.matches("(.*)=RUN=")) {
+    def xml = new XmlParser().parseText(fileContent)
+    def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    jobParams.each {
+      it ->
+        def k = "${it.name.text()}"
+        if (params[k]) { it.defaultValue[0].value = params[k] }
+    }
+    fileContent = XmlUtil.serialize(xml)
+  }
+  def jobName = item.getName().replace(src, trg)
+  def stream = new ByteArrayInputStream(fileContent.getBytes())
+  def job = jenkins.createProjectFromXML(jobName, stream)
+  println "${job.name}"
+}
 
-// jenkins.save()
+jenkins.save()
 
 return 0
