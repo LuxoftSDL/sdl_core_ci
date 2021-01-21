@@ -5,6 +5,7 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
+import groovy.lang.Tuple
 
 def user = "luxoft_ci_tech@luxoft.com"
 def token = "11630b3455e47056ae847be8445ccdf9b7"
