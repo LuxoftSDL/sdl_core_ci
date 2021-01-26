@@ -69,7 +69,7 @@ for(item in srcView.getItems()) {
     // def xml = new XmlSlurper().parseText(fileContent)
     //println(xml)
     println "here ok"
-    def jobParams = xml.children[1]
+    def jobParams = xml.children()[1].text()
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     println(jobParams)
     def jobParams2 = xml.properties
