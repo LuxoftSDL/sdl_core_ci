@@ -5,7 +5,6 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
-import groovy.util.*
 
 println '=== Parameters: ==='
 params = [:]
@@ -62,8 +61,10 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
-    def xml = new XmlParser().parseText(fileContent)
-    def jobParams = xml.properties."ParametersDefinitionProperty".parameterDefinitions."StringParameterDefinition"
+    xml = new XmlParser().parseText(fileContent)
+    println "here ok"
+    jobParams = new xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    println "here not ok"
     jobParams.each {
       it ->
         def k = "${it.name.text()}"
