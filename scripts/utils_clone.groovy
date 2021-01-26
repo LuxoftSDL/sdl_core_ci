@@ -5,21 +5,19 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
-import groovy.lang.Tuple2
 
-def user = "luxoft_ci_tech@luxoft.com"
-def token = "11630b3455e47056ae847be8445ccdf9b7"
-
-println "=== Parameters: ==="
-println GroovySystem.version
-def params = [:]
+println '=== Parameters: ==='
+params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-  def (k, v) = ["${it.name}", "${it.value}"]
-  if (v) {
-    params[k] = v
-    println "${k}: ${v}"
-  }
+//def (k, v) = ["${it.name}", "${it.value}"]
+// if (v) {
+//  params[k] = v
+//   println "${k}: ${v}"
+//  }
+params["${it.name}"] = "${it.value}"
 }
+user = "luxoft_ci_tech@luxoft.com"
+token = params["CI_PASSWORD"]
 
 def src
 def trg
