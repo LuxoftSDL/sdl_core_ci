@@ -6,6 +6,8 @@ import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
 import groovy.lang.*
+import groovy.lang.Binding;
+import groovy.lang.GroovyShell;
 
 println '=== Parameters: ==='
 def params = [:]
