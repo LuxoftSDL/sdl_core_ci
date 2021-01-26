@@ -75,7 +75,6 @@ for(item in srcView.getItems()) {
         println("${it.get('hudson.model.StringParameterDefinition')}")
     }
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
-    println(jobParams)
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
     println "here not ok"
