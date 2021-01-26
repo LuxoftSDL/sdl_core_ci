@@ -79,7 +79,7 @@ for(item in srcView.getItems()) {
     println("===============1")
     // println(jobParams.find_all('hudson.model.StringParameterDefinition'))
     println("===============2")
-    println(jobParams.children()[0])
+    println(jobParams.children())
     println("===============3")
     jobParams2.each {
       it ->
