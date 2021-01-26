@@ -66,7 +66,7 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     // def xml = new XmlParser().parseText(fileContent)
-    def xml = XmlSlurper().parseText(fileContent)
+    def xml = new XmlSlurper().parseText(fileContent)
     println(xml)
     println "here ok"
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
