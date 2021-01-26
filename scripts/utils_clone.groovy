@@ -71,9 +71,8 @@ for(item in srcView.getItems()) {
     println "here ok"
     def jobParams = xml.properties
     def jobParams2
-    jobParams.each {
-      k, v ->
-        println "${k}:${v}"
+    for ( e in jobParams ) {
+        print "key = ${e.key}, value = ${e.value}"
     }
     println("===============1")
     // println(jobParams.find_all('hudson.model.StringParameterDefinition'))
