@@ -76,8 +76,11 @@ for(item in srcView.getItems()) {
         println("${it.get('hudson.model.ParametersDefinitionProperty')}")
         jobParams2 = "${it.get('hudson.model.ParametersDefinitionProperty')}"
     }
-    println(jobParams2)
-    println("===============")
+    println("===============1")
+    println(jobParams[0])
+    println("===============2")
+    println(jobParams2[0])
+    println("===============3")
     jobParams2.each {
       it ->
         println("${it.get('hudson.model.StringParameterDefinition')}")
