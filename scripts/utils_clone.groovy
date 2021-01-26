@@ -63,7 +63,7 @@ for(item in srcView.getItems()) {
   if (item.name.matches("(.*)=RUN=")) {
     xml = new XmlParser().parseText(fileContent)
     println "here ok"
-    jobParams = new xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     println "here not ok"
     jobParams.each {
       it ->
