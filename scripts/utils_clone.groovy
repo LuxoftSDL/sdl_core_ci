@@ -72,7 +72,7 @@ for(item in srcView.getItems()) {
     def jobParams = xml.properties
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     println(jobParams)
-    def jobParams2 = xml.properties[1]
+    def jobParams2 = xml.properties.children()[0]
     println(jobParams2)
     println "here not ok"
     jobParams.each {
