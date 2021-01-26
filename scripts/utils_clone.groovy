@@ -5,6 +5,7 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
+import groovy.lang.*
 
 println '=== Parameters: ==='
 params = [:]
