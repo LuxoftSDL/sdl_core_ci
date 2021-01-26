@@ -8,6 +8,7 @@ import groovy.xml.XmlUtil
 import groovy.lang.*
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import groovy.util.XmlSlurper
 
 println '=== Parameters: ==='
 def params = [:]
@@ -64,10 +65,12 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
-    def xml = new XmlParser().parseText(fileContent)
+    // def xml = new XmlParser().parseText(fileContent)
+    def xml = XmlSlurper().parseText(fileContent)
+    println(xml)
     println "here ok"
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    def jobParams2 = xml.properties
     println(jobParams)
     println "here not ok"
     jobParams.each {
