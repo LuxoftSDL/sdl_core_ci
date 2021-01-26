@@ -8,7 +8,7 @@ import groovy.xml.XmlUtil
 import groovy.lang.*
 
 println '=== Parameters: ==='
-params = [:]
+def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
 //def (k, v) = ["${it.name}", "${it.value}"]
 // if (v) {
@@ -17,8 +17,8 @@ build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
 //  }
 params["${it.name}"] = "${it.value}"
 }
-user = "luxoft_ci_tech@luxoft.com"
-token = params["CI_PASSWORD"]
+def user = "luxoft_ci_tech@luxoft.com"
+def token = params["CI_PASSWORD"]
 
 def src
 def trg
@@ -62,9 +62,9 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
-    xml = new XmlParser().parseText(fileContent)
+    def xml = new XmlParser().parseText(fileContent)
     // def jobParams = job.getProperties()
-    jobParams = currentBuild.rawBuild.parent.properties
+    def jobParams = currentBuild.rawBuild.parent.properties
     .findAll { it.value instanceof hudson.model.ParametersDefinitionProperty }
     .collectMany { it.value.parameterDefinitions }
     println(jobParams)
