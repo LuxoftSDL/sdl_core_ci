@@ -62,7 +62,7 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    def jobParams = xml.properties."ParametersDefinitionProperty".parameterDefinitions."StringParameterDefinition"
     jobParams.each {
       it ->
         def k = "${it.name.text()}"
