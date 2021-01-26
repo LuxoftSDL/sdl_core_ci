@@ -72,7 +72,7 @@ for(item in srcView.getItems()) {
     def jobParams = xml.properties
     jobParams.each {
       it ->
-        println("${it.get('hudson.model.ParametersDefinitionProperty')}")
+        println("${it.get('hudson.model.ParametersDefinitionProperty').get('hudson.model.StringParameterDefinition')}")
     }
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     // def jobParams2 = xml.properties.children()[0]
