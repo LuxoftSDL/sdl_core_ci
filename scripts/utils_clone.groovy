@@ -70,12 +70,18 @@ for(item in srcView.getItems()) {
     //println(xml)
     println "here ok"
     def jobParams = xml.properties
+    def jobParams2
     jobParams.each {
       it ->
         println("${it.get('hudson.model.ParametersDefinitionProperty')}")
-        def jobParams2 = "${it.get('hudson.model.StringParameterDefinition')}"
+        jobParams2 = "${it.get('hudson.model.ParametersDefinitionProperty')}"
     }
     println(jobParams2)
+    println("===============")
+    jobParams2.each {
+      it ->
+        println("${it.get('hudson.model.StringParameterDefinition')}")
+    }
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
