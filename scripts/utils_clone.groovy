@@ -65,13 +65,14 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
-    // def xml = new XmlParser().parseText(fileContent)
-    def xml = new XmlSlurper().parseText(fileContent)
-    println(xml)
+    def xml = new XmlParser().parseText(fileContent)
+    // def xml = new XmlSlurper().parseText(fileContent)
+    //println(xml)
     println "here ok"
+    def jobParams = xml.properties
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    def jobParams2 = xml.properties
     println(jobParams)
+    def jobParams2 = xml.properties
     println "here not ok"
     jobParams.each {
       it ->
