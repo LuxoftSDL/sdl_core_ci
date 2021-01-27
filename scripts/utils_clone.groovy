@@ -15,7 +15,7 @@ println '=== Parameters: ==='
 println GroovySystem.version
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-def (k, v) = new Tuple2("${it.name}", "${it.value}")
+def (k, v) = new Tuple2(["${it.name}", "${it.value}"] as Object[])
 if (v) {
  params[k] = v
   println "${k}: ${v}"
