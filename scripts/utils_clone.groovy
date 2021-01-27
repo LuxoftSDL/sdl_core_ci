@@ -9,12 +9,13 @@ import groovy.lang.*
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.util.XmlSlurper
+import groovy.lang.Tuple2
 
 println '=== Parameters: ==='
 println GroovySystem.version
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-def (k, v) = ["${it.name}", "${it.value}"]
+def (k, v) = new Tuple2("${it.name}", "${it.value}")
 if (v) {
  params[k] = v
   println "${k}: ${v}"
