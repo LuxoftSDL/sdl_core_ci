@@ -66,26 +66,17 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    // def xml = new XmlSlurper().parseText(fileContent)
-    //println(xml)
-    println "here ok"
-    def jobParams = xml.properties
-    def jobParams2
-    for ( e in jobParams ) {
-        print "key = ${e.key}, value = ${e.value}"
-    }
-    println("===============1")
-    // println(jobParams.find_all('hudson.model.StringParameterDefinition'))
-    println("===============2")
-    println(jobParams.value())
-    println("===============3")
-    jobParams2.each {
-      it ->
-        println("${it.get('hudson.model.StringParameterDefinition')}")
-    }
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
+    def jobParams = xml.properties
+    try { 
+      println(jobParams[0])
+      println("==============")
+      println(jobParams.children()[0])
+    } catch(ExceptionName e1) {
+      println("ololo")
+    }
     println "here not ok"
     jobParams.each {
       it ->
