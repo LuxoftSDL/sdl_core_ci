@@ -70,9 +70,12 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
-    // def jobParams2 = xml.properties.children()[0]
-    // println(jobParams2)
+    // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
+    def jobParams2 = xml.properties
+    println(jobParams2)
+    println("========================")
+    println(xml.properties.finAll('hudson.model.ParametersDefinitionProperty'))
+    println("========================")
     // def jobParams2 = xml.properties
     // def jobParams
     // jobParams.each {
