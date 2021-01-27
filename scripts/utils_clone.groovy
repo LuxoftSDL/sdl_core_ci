@@ -70,7 +70,7 @@ for(item in srcView.getItems()) {
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
     def jobParams = xml.properties
-    println(jobParams[1])
+    println(jobParams.[0])
     println("==============")
     println(jobParams[0][2])
   println "here not ok"
