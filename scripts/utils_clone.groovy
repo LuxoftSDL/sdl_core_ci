@@ -74,8 +74,11 @@ for(item in srcView.getItems()) {
     def jobParams2 = xml.properties
     println(jobParams2)
     println("========================")
-    println(xml.properties.findAll('hudson.model.ParametersDefinitionProperty'))
+    println(xml.find('hudson.model.ParametersDefinitionProperty'))
     println("========================")
+    println(xml.properties.find('hudson.model.ParametersDefinitionProperty'))
+    println("========================")
+    
     // def jobParams2 = xml.properties
     // def jobParams
     // jobParams.each {
