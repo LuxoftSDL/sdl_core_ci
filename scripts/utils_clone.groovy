@@ -17,11 +17,9 @@ def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
 // def (k, v) = new Tuple2(["${it.name}", "${it.value}"] as Object[])
 def k = "${it.name}"
-println(k.getClass())
 println('=======')
 println(k)
 def v = "${it.value}"
-println(v.getClass())
 println('=======')
 println(v)
 if (v) {
@@ -76,6 +74,7 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
+    println(xml)
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     def jobParams2 = xml.properties
     println(jobParams2)
