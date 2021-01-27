@@ -14,12 +14,12 @@ println '=== Parameters: ==='
 println GroovySystem.version
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-//def (k, v) = ["${it.name}", "${it.value}"]
-// if (v) {
-//  params[k] = v
-//   println "${k}: ${v}"
-//  }
-params["${it.name}"] = "${it.value}"
+def (k, v) = ["${it.name}", "${it.value}"]
+if (v) {
+ params[k] = v
+  println "${k}: ${v}"
+ }
+/// params["${it.name}"] = "${it.value}"
 }
 def user = "luxoft_ci_tech@luxoft.com"
 def token = params["CI_PASSWORD"]
