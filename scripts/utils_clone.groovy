@@ -70,14 +70,10 @@ for(item in srcView.getItems()) {
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
     def jobParams = xml.properties
-    try { 
-      println(jobParams[0])
-      println("==============")
-      println(jobParams.children()[0])
-    } catch(ExceptionName e1) {
-      println("ololo")
-    }
-    println "here not ok"
+    println(jobParams[0])
+    println("==============")
+    println(jobParams.children()[0])
+  println "here not ok"
     jobParams.each {
       it ->
         def k = "${it.name.text()}"
