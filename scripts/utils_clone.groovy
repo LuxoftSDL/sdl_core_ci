@@ -17,7 +17,13 @@ def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
 // def (k, v) = new Tuple2(["${it.name}", "${it.value}"] as Object[])
 def k = "${it.name}"
+println(k.getClass())
+println('=======')
+println(k)
 def v = "${it.value}"
+println(v.getClass())
+println('=======')
+println(v)
 if (v) {
  params[k] = v
   println "${k}: ${v}"
