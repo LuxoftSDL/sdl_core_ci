@@ -66,16 +66,16 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
+    def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     // def jobParams2 = xml.properties.children()[0]
     // println(jobParams2)
-    def jobParams2 = xml.properties
-    def jobParams
-    jobParams.each {
-      it ->
-        def k = "${it.name.text()}"
-        jobParams << k
-    }
+    // def jobParams2 = xml.properties
+    // def jobParams
+    // jobParams.each {
+    //   it ->
+    //     def k = "${it.name.text()}"
+    //     jobParams << k
+    // }
     println "here not ok"
     jobParams.each {
       it ->
