@@ -76,11 +76,13 @@ for(item in srcView.getItems()) {
     println("+++++++++++++++++++++++++++++++")
     println(fileContent)
     println("++++++++++++++++++++++++++++++++++")
-    def xml = new XmlParser().parseText(fileContent)
-    // def xml=new XmlSlurper().parseText(fileContent)
+    // def xml = new XmlParser().parseText(fileContent)
+    def xml=new XmlSlurper().parseText(fileContent)
     println("==================================")
-    println xml.properties.'**'.parameterDefinitions.'hudson.model.StringParameterDefinition'.text()
+    def leaves = transaction.depthFirst().findAll() { it.children().text() == 'hudson.model.ParametersDefinitionProperty'}
+    //println xml.properties.'**'.parameterDefinitions.'hudson.model.StringParameterDefinition'.text()
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
+    println leaves
     def jobParams2 = xml.properties
     // def jobParams2 = xml.properties
     // def jobParams
