@@ -78,7 +78,7 @@ for(item in srcView.getItems()) {
     def xml = new XmlParser().parseText(fileContent)
     // def xml=new XmlSlurper().parse(fileContent)
     println("++++++++++++++++++++++++++++++++++")
-    println xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.text()
+    println xml.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'.text()
     // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
     def jobParams2 = xml.properties
     // def jobParams2 = xml.properties
