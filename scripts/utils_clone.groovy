@@ -10,23 +10,18 @@ import groovy.lang.Binding;
 import groovy.util.XmlSlurper
 import groovy.lang.Tuple2
 import groovy.util.slurpersupport.GPathResult
+import jenkins.model.Jenkins
+import hudson.model.ListView
 
 println '=== Parameters: ==='
-println GroovySystem.version
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-// def (k, v) = new Tuple2(["${it.name}", "${it.value}"] as Object[])
 def k = "${it.name}"
-println('=======')
-println(k)
 def v = "${it.value}"
-println('=======')
-println(v)
 if (v) {
  params[k] = v
   println "${k}: ${v}"
  }
-/// params["${it.name}"] = "${it.value}"
 }
 def user = "luxoft_ci_tech@luxoft.com"
 def token = params["CI_PASSWORD"]
@@ -74,22 +69,13 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    // def xml=new XmlSlurper().parseText(fileContent)
-    println("==================================")
-    // def leaves = xml.depthFirst().findAll() { it.children().text() == 'hudson.model.ParametersDefinitionProperty'}
-    //println xml.properties.'**'.parameterDefinitions.'hudson.model.StringParameterDefinition'.text()
-    // def jobParams = xml.properties.'hudson.model.ParametersDefinitionProperty'.parameterDefinitions.'hudson.model.StringParameterDefinition'
-    //println leaves
-    def jobParams2 = xml.properties
-    // def jobParams2 = xml.properties
     def jobParams
-    jobParams2.each {
+    jobParams.each {
       it ->
-        def k = "${it.name.text()}"
+        def k = "${it.name}"
         jobParams << k
     }
-    println "here not ok"
-    jobParams2.each {
+    jobParams.each {
       it ->
         def k = "${it.name.text()}"
         if (params[k]) { it.defaultValue[0].value = params[k] }
@@ -100,6 +86,7 @@ for(item in srcView.getItems()) {
   def stream = new ByteArrayInputStream(fileContent.getBytes())
   def job = jenkins.createProjectFromXML(jobName, stream)
   println "${job.name}"
+  trgView.doAddJobToView("${job.name}")
 }
 
 jenkins.save()
