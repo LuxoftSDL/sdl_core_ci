@@ -7,9 +7,9 @@ import hudson.model.*
 import groovy.xml.XmlUtil
 import groovy.lang.*
 import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 import groovy.util.XmlSlurper
 import groovy.lang.Tuple2
+import groovy.util.slurpersupport.GPathResult
 
 println '=== Parameters: ==='
 println GroovySystem.version
