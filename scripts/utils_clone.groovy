@@ -71,6 +71,8 @@ for(item in srcView.getItems()) {
     def xml = new XmlParser().parseText(fileContent)
     def jobParams
     def jobParams2 = xml.properties
+    println jobParams2
+    println jobParams2[0]
     jobParams2.each {
       it ->
         def k = "${it.name}"
