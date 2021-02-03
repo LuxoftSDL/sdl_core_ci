@@ -69,18 +69,21 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    println fileContent
+    // println fileContent
     def jobParams
     def jobParams2 = xml.properties
     // println jobParams2
     println "========================================="
+    println "xml1 is "
     println xml
     println "========================================="
+    println "xml2 is "
     def xml2 = new XmlSlurper().parseText(fileContent)
     println xml2
     println "========================================="
+    println "nodes are"
     xml2.nodes.node.each {
-     println ${it.name}; // here I got an exception org.codehaus.groovy.runtime.typehandling.GroovyCastException
+     println "ololo is ${it.name}"; // here I got an exception org.codehaus.groovy.runtime.typehandling.GroovyCastException
     }
     def i = 0
     jobParams2.each {
