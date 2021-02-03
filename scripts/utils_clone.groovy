@@ -61,6 +61,14 @@ println "${trgView.name}"
 
 def srcView = jenkins.getView(src)
 
+def processXml( String xml, String xpathQuery ) {
+  def xpath = XPathFactory.newInstance().newXPath()
+  def builder     = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+  def inputStream = new ByteArrayInputStream( xml.bytes )
+  def records     = builder.parse(inputStream).documentElement
+  xpath.evaluate( xpathQuery, records )
+}
+
 println "=== New jobs created: ==="
 for(item in srcView.getItems()) {
   if (item.name.matches("(.*)_Issue_(.*)") && !createIssueJobs) { continue }
@@ -69,7 +77,8 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    println processXml( fileContent, '//properties/hudson.model.ParametersDefinitionProperty/parameterDefinitions@hudson.model.StringParameterDefinition' )
+    // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     // jobParams.each {
     //   it ->
     //     // def k = "${it.value}"
