@@ -71,18 +71,19 @@ for(item in srcView.getItems()) {
     def xml = new XmlParser().parseText(fileContent)
     def jobParams
     def jobParams2 = xml.properties
-    println jobParams2
+    // println jobParams2
     println "========================================="
     def i = 0
-    xml.children()[0].each {
+    jobParams2.each {
       it ->
         // def k = "${it.value}"
+        println "++++++++++++++++++++++++++++"
         println "this is iteration ${i}"
         println "it name is ${it.name}"
-        println "++++++++++++++++++++++++++++"
         println "it value is ${it.value}"
         // jobParams << k
         println "stop iteration ${i}"
+        println "++++++++++++++++++++++++++++"
         i = i + 1
     }
     jobParams.each {
