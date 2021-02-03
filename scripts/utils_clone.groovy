@@ -70,7 +70,8 @@ for(item in srcView.getItems()) {
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
     def jobParams
-    jobParams.each {
+    def jobParams2 = xml.properties
+    jobParams2.each {
       it ->
         def k = "${it.name}"
         jobParams << k
