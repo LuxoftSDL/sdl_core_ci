@@ -96,7 +96,10 @@ for(item in srcView.getItems()) {
     // }
     jobParams.each {
       it ->
-        def k = "${it.name.text()}"
+        def k = "${it[0]}"
+        println("++++++++")
+        println k
+        println("++++++++++")
         if (params[k]) { it.defaultValue[0].value = params[k] }
     }
     fileContent = XmlUtil.serialize(xml)
