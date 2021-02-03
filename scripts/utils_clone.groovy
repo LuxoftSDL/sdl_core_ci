@@ -76,7 +76,7 @@ for(item in srcView.getItems()) {
     println "========================================="
     println xml
     println "========================================="
-    def xml = new XmlSlurper().parseText(fileContent)
+    def xml2 = new XmlSlurper().parseText(fileContent)
     println xml2
     println "========================================="
     xml2.nodes.node.each {
