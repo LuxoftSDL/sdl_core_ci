@@ -12,6 +12,8 @@ import groovy.lang.Tuple2
 import groovy.util.slurpersupport.GPathResult
 import jenkins.model.Jenkins
 import hudson.model.ListView
+import javax.xml.xpath.*
+import javax.xml.parsers.DocumentBuilderFactory
 
 println '=== Parameters: ==='
 def params = [:]
