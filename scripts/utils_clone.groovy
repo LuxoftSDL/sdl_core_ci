@@ -72,21 +72,10 @@ for(item in srcView.getItems()) {
     // println fileContent
     def jobParams
     def jobParams2 = xml.properties
-    // println jobParams2
-    println "========================================="
-    println "xml1 is "
-    println xml
-    println "========================================="
-    println "xml2 is "
-    def xml2 = new XmlSlurper().parseText(fileContent)
-    println xml2
-    println "========================================="
-    println "nodes are"
-    xml2.nodes.node.each {
-     println "ololo is ${it.name}"; // here I got an exception org.codehaus.groovy.runtime.typehandling.GroovyCastException
-    }
-    def i = 0
-    jobParams2.each {
+    newxml = XmlUtil.serialize(jobParams2)
+    def xml2 = new XmlParser().parseText(newxml)
+    jobParams = newxml."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    jobParams.each {
       it ->
         // def k = "${it.value}"
         println "++++++++++++++++++++++++++++"
