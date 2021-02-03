@@ -74,7 +74,7 @@ for(item in srcView.getItems()) {
     println jobParams2
     println "========================================="
     def i = 0
-    xml.each {
+    xml.children()[0].each {
       it ->
         // def k = "${it.value}"
         println "this is iteration ${i}"
