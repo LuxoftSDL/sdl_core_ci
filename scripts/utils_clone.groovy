@@ -81,7 +81,7 @@ for(item in srcView.getItems()) {
     def xml = new XmlParser().parseText(fileContent)
     println processXml( fileContent, '//properties/hudson.model.ParametersDefinitionProperty/parameterDefinitions/hudson.model.StringParameterDefinition' )
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    def jobParams = processXml
+    def jobParams = processXml( fileContent, '//properties/hudson.model.ParametersDefinitionProperty/parameterDefinitions/hudson.model.StringParameterDefinition' )
     // jobParams.each {
     //   it ->
     //     // def k = "${it.value}"
