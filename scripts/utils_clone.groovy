@@ -73,8 +73,9 @@ for(item in srcView.getItems()) {
     def jobParams
     def jobParams2 = xml.properties
     newxml = XmlUtil.serialize(jobParams2)
+    println "serialized"
     def xml2 = new XmlParser().parseText(newxml)
-    jobParams = newxml."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    jobParams = xml2."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     jobParams.each {
       it ->
         // def k = "${it.value}"
