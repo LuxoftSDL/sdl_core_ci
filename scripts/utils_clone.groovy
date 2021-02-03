@@ -72,10 +72,11 @@ for(item in srcView.getItems()) {
     def jobParams
     def jobParams2 = xml.properties
     println jobParams2
+    println "========================================="
     println jobParams2[0]
     jobParams2.each {
       it ->
-        def k = "${it.name}"
+        def k = "${it.value}"
         jobParams << k
     }
     jobParams.each {
