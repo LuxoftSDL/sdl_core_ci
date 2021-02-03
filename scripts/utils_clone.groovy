@@ -69,25 +69,19 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    // println fileContent
-    def jobParams
-    def jobParams2 = xml.properties
-    newxml = XmlUtil.serialize(jobParams2)
-    println "serialized"
-    def xml2 = new XmlParser().parseText(newxml)
-    jobParams = xml2."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    jobParams.each {
-      it ->
-        // def k = "${it.value}"
-        println "++++++++++++++++++++++++++++"
-        println "this is iteration ${i}"
-        println "it name is ${it.name}"
-        println "it value is ${it.value}"
-        // jobParams << k
-        println "stop iteration ${i}"
-        println "++++++++++++++++++++++++++++"
-        i = i + 1
-    }
+    jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+    // jobParams.each {
+    //   it ->
+    //     // def k = "${it.value}"
+    //     println "++++++++++++++++++++++++++++"
+    //     println "this is iteration ${i}"
+    //     println "it name is ${it.name}"
+    //     println "it value is ${it.value}"
+    //     // jobParams << k
+    //     println "stop iteration ${i}"
+    //     println "++++++++++++++++++++++++++++"
+    //     i = i + 1
+    // }
     jobParams.each {
       it ->
         def k = "${it.name.text()}"
