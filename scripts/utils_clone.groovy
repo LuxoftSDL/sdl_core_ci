@@ -96,7 +96,7 @@ for(item in srcView.getItems()) {
     // }
     jobParams.each {
       it ->
-        def k = "${it[0]}"
+        def k = "${it.value}"
         println("++++++++")
         println k
         println("++++++++++")
