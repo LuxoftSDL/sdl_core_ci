@@ -62,7 +62,7 @@ def process2 = reqPost.execute()
 process2.waitFor()
 
 println "=== New views created: ==="
-$trgView.doSubmitDescription([ getParameter: { return "My description"; }] as StaplerRequest, [ sendRedirect: { return; } ] as StaplerResponse)
+trgView.doSubmitDescription([ getParameter: { return "My description"; }] as StaplerRequest, [ sendRedirect: { return; } ] as StaplerResponse)
 println "${trgView.name}"
 
 def srcView = jenkins.getView(src)
