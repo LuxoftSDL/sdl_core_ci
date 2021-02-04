@@ -79,9 +79,10 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    println processXml( fileContent, '//hudson.model.ParametersDefinitionProperty/parameterDefinitions' )
+    //println processXml( fileContent, '//hudson.model.ParametersDefinitionProperty/parameterDefinitions' )
     // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     def jobParams = processXml( fileContent, '//properties/hudson.model.ParametersDefinitionProperty/parameterDefinitions/hudson.model.StringParameterDefinition' )
+    println jobParams
     // jobParams.each {
     //   it ->
     //     // def k = "${it.value}"
@@ -97,9 +98,9 @@ for(item in srcView.getItems()) {
     jobParams.each {
       it ->
         def k = "${it.value}"
-        println("++++++++")
-        println k[0]
-        println("++++++++++")
+        // println("++++++++")
+        // println k[0]
+        // println("++++++++++")
         if (params[k]) { it.defaultValue[0].value = params[k] }
     }
     fileContent = XmlUtil.serialize(xml)
