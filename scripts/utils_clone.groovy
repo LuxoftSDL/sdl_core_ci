@@ -98,7 +98,7 @@ for(item in srcView.getItems()) {
       it ->
         def k = "${it.value}"
         println("++++++++")
-        println k
+        println k[0]
         println("++++++++++")
         if (params[k]) { it.defaultValue[0].value = params[k] }
     }
