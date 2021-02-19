@@ -5,6 +5,10 @@ _sdl_folder=build_core
 _report_folder=TestingReports
 _num_of_workers=24
 
+echo "=== Set number of workers"
+[ ! -z "$NUM_OF_WORKERS" ] && _num_of_workers=$NUM_OF_WORKERS
+echo "Number of workers:" $_num_of_workers
+
 echo "=== Prepare SCRIPTS"
 git clone --single-branch --branch $SCRIPT_BRANCH $SCRIPT_REPOSITORY
 _scripts_folder=$(basename ${SCRIPT_REPOSITORY%.git})
