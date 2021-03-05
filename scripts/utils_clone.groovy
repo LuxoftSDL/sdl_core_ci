@@ -17,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 import org.kohsuke.stapler.StaplerRequest
 import org.kohsuke.stapler.StaplerResponse
 
-https://img.shields.io/github/issues/detail/state/smartdevicelink/sdl_core/3141
 println '=== Parameters: ==='
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
@@ -62,7 +61,6 @@ def process2 = reqPost.execute()
 process2.waitFor()
 
 println "=== New views created: ==="
-Jenkins.instance.getView("${trgView.name}").doSubmitDescription([ getParameter: { return "My description"; }] as StaplerRequest, [ sendRedirect: { return; } ] as StaplerResponse)
 println "${trgView.name}"
 
 def srcView = jenkins.getView(src)
@@ -101,7 +99,7 @@ for(item in srcView.getItems()) {
     // }
     jobParams.each {
       it ->
-        def k = "${it.name}"
+        def k = "${it.name.text()}"
         // println("++++++++")
         // println k[0]
         // println("++++++++++")
