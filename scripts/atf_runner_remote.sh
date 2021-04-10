@@ -1,10 +1,16 @@
 #!/bin/bash
 
+_docker_image=$1
+
+if [ -z $_docker_image ]; then
+  _docker_image=remote_atf:u18
+fi
+
 _atf_folder=build_atf
 _report_folder=TestingReports
 
 echo "=== Prepare Remote environment"
-remote_hash=$(docker run -d --rm remote_atf:u18 tail -f)
+remote_hash=$(docker run -d --rm $_docker_image tail -f)
 remote_ip=$(docker inspect $remote_hash | grep '\"IPAddress\": "172.17.0' | tail -n1 | awk '{print $2}' | sed 's/[",]//g')
 local_ip=$(ip add | grep 172.17 | awk '{print $2}' | sed 's|/16||g')
 echo $remote_hash $remote_ip $local_ip
