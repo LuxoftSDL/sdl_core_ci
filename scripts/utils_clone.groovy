@@ -14,8 +14,6 @@ import jenkins.model.Jenkins
 import hudson.model.ListView
 import javax.xml.xpath.*
 import javax.xml.parsers.DocumentBuilderFactory
-import org.kohsuke.stapler.StaplerRequest
-import org.kohsuke.stapler.StaplerResponse
 
 println '=== Parameters: ==='
 def params = [:]
@@ -99,7 +97,7 @@ for(item in srcView.getItems()) {
     // }
     jobParams.each {
       it ->
-        def k = "${it.name.text()}"
+        def k = "${it.value}"
         // println("++++++++")
         // println k[0]
         // println("++++++++++")
