@@ -61,9 +61,9 @@ for(item in srcView.getItems()) {
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
     def job_pre_params = xml.properties."hudson.model.ParametersDefinitionProperty"
-    println(++++++++++++++++++++++++++++++)
-    println job_pre_params
-    println(++++++++++++++++++++++++++++++)
+    println("++++++++++++++++++++++++++++++")
+    println(job_pre_params)
+    println("++++++++++++++++++++++++++++++")
     def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     jobParams.each {
       it ->
