@@ -5,29 +5,18 @@ import jenkins.model.*
 import hudson.*
 import hudson.model.*
 import groovy.xml.XmlUtil
-import groovy.lang.*
-import groovy.lang.Binding;
-import groovy.util.XmlSlurper
-import groovy.lang.Tuple2
-import groovy.util.slurpersupport.GPathResult
-import jenkins.model.Jenkins
-import hudson.model.ListView
-import javax.xml.xpath.*
-import javax.xml.parsers.DocumentBuilderFactory
 
-println '=== Parameters: ==='
+println "=== Parameters: ==="
 def params = [:]
 build?.actions.find{ it instanceof ParametersAction }?.parameters.each {
-def k = "${it.name}"
-def v = "${it.value}"
-if (v) {
- params[k] = v
-  println "${k}: ${v}"
- }
+if (it.value!=""){
+params[it.name] = it.value
+println("${it.name}:${it.value}")
 }
+}
+println(params)
 def user = "luxoft_ci_tech@luxoft.com"
 def token = params["CI_PASSWORD"]
-
 def src
 def trg
 if (params["SOURCE_VIEW"]) { src = params["SOURCE_VIEW"] }
@@ -63,14 +52,6 @@ println "${trgView.name}"
 
 def srcView = jenkins.getView(src)
 
-def processXml( String xml, String xpathQuery ) {
-  def xpath = XPathFactory.newInstance().newXPath()
-  def builder     = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-  def inputStream = new ByteArrayInputStream( xml.bytes )
-  def records     = builder.parse(inputStream).documentElement
-  xpath.evaluate( xpathQuery, records )
-}
-
 println "=== New jobs created: ==="
 for(item in srcView.getItems()) {
   if (item.name.matches("(.*)_Issue_(.*)") && !createIssueJobs) { continue }
@@ -79,28 +60,13 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
-    //println processXml( fileContent, '//hudson.model.ParametersDefinitionProperty/parameterDefinitions' )
-    // jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    def jobParams = processXml( fileContent, '//properties/hudson.model.ParametersDefinitionProperty/parameterDefinitions/hudson.model.StringParameterDefinition' )
-    println jobParams
-    // jobParams.each {
-    //   it ->
-    //     // def k = "${it.value}"
-    //     println "++++++++++++++++++++++++++++"
-    //     println "this is iteration ${i}"
-    //     println "it name is ${it.name}"
-    //     println "it value is ${it.value}"
-    //     // jobParams << k
-    //     println "stop iteration ${i}"
-    //     println "++++++++++++++++++++++++++++"
-    //     i = i + 1
-    // }
+    def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     jobParams.each {
       it ->
-        def k = "${it.value}"
-        // println("++++++++")
-        // println k[0]
-        // println("++++++++++")
+        def k = "${it.name.text()}"
+        println("=========================")
+        println k
+        println("=========================")
         if (params[k]) { it.defaultValue[0].value = params[k] }
     }
     fileContent = XmlUtil.serialize(xml)
@@ -109,7 +75,6 @@ for(item in srcView.getItems()) {
   def stream = new ByteArrayInputStream(fileContent.getBytes())
   def job = jenkins.createProjectFromXML(jobName, stream)
   println "${job.name}"
-  trgView.doAddJobToView("${job.name}")
 }
 
 jenkins.save()
