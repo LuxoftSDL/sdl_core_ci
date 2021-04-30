@@ -59,16 +59,10 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
-    println('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    println(fileContent)
-    def xml = new XmlParser().parseText(fileContent)
-    println('===============================================================')
-    println(xml)
-    println("---------------------------------------------------------------")
-    println(xml.properties[0])
-    println('++++++++++++++++++++++++++++++')
-    def jobParams = xml.properties."hudson.security.AuthorizationMatrixProperty"."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
-    jobParams.each {
+  def xml = new XmlParser().parseText(fileContent)
+  println("++++++++++++++++++++++++++++++++++")
+  def jobParams = xml.properties."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
+  jobParams.each {
       it ->
         def k = "${it.name.text()}"
         println("=========================")
