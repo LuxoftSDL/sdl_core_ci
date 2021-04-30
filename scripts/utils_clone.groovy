@@ -60,8 +60,10 @@ for(item in srcView.getItems()) {
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
     def xml = new XmlParser().parseText(fileContent)
+    println('===============================================================')
+    println(xml)
     println("---------------------------------------------------------------")
-    println(xml.properties[0][0])
+    println(xml.properties[0])
     println('++++++++++++++++++++++++++++++')
     def jobParams = xml.properties."hudson.security.AuthorizationMatrixProperty"."hudson.model.ParametersDefinitionProperty".parameterDefinitions."hudson.model.StringParameterDefinition"
     jobParams.each {
