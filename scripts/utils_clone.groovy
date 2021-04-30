@@ -59,6 +59,8 @@ for(item in srcView.getItems()) {
   File file = config.getFile()
   String fileContent = file.getText('UTF-8').replaceAll(src, trg)
   if (item.name.matches("(.*)=RUN=")) {
+    println('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    println(fileContent)
     def xml = new XmlParser().parseText(fileContent)
     println('===============================================================')
     println(xml)
